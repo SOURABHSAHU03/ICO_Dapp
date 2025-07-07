@@ -93,30 +93,5 @@ Alchemy will provide you with some free test faucets which you can transfer to y
   URL : https://faucet.polygon.technology/
 ```
 
-#### RemixID
 
-We are using RemixID for deploying the contract and generation of the ABI in the project, but you can use any other tools like Hardhat, etc.
 
-```https://remix-project.org
-  OPEN: RemixID
-  URL: https://remix-project.org
-```
-
-#### Polygon Mumbai
-
-```https://amoy.polygonscan.com/
-  OPEN: Polygon Amoy
-  URL: https://amoy.polygonscan.com/
-```
-
-## Important Links
-
-- [Get Pro Blockchain Developer Course](https://www.theblockchaincoders.com/pro-nft-marketplace)
-- [Support Creator](https://bit.ly/Support-Creator)
-- [All Projects Source Code](https://www.theblockchaincoders.com/SourceCode)
-
-## Authors
-
-- [@theblockchaincoders.com](https://www.theblockchaincoders.com/)
-- [@consultancy](https://www.theblockchaincoders.com/consultancy)
-- [@youtube](https://www.youtube.com/@daulathussain)
