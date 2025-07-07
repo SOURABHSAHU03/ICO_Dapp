@@ -1,3 +1,18 @@
+import{ethers} from "ethers";
+import Web3modal from "web3modal";
+
+import tokenICO from "./TokenICO.json";
+import erc20 from "./ERC20.json";
+
+
+export const TOKEN_ADDRESS = "0xA6F259a56e4DCA4706A073f052e8171d3Bd12182";
+export const ERC20_ABI = erc20.abi;
+
+export const OWNER_ADDRESS = "0xea31e47769f706763B12AFFf8EDe8cFD24cc3414";
+
+export const CONTRACT_ADDRESS ="0xAd01964AA20b460fE2c82D3FeaC694B555eb8189";
+export const CONTRACT_ABI = tokenICO.abi;
+
 const networks = {
   sepolia: {
     chainId: `0x${Number(11155111).toString(16)}`,
@@ -102,3 +117,213 @@ const networks = {
 
 const tokenImage =
       "https://www.daulathussain.com/wp-content/uploads/2024/05/theblockchaincoders.jpg";
+
+
+const changeNetwork = async ({networkName}) => {
+  try {
+    if(!window.ethereum) {
+      throw new Error("MetaMask is not installed");
+    }
+    await window.ethereum.request({
+      method : "wallet_addEthereumChain",
+      params: [
+        {
+          ...networks[networkName],
+        }
+      ]
+    });
+  }catch(error) {
+    console.error("Failed to change network:", error);
+    throw error;
+  }
+};
+
+export const handleNetworkSwitch = async() =>{
+    const networkName = "holesky";
+    await changeNetwork({networkName});
+};
+
+export const CHECK_WALLET_CONNECTED = async() => {
+  if(!window.ethereum) {
+    throw new Error("MetaMask is not installed");
+  }
+  await handleNetworkSwitch();
+  const accounts = await window.ethereum.request({
+    method: "eth_accounts",
+  });
+
+  if(accounts.length) {
+    return accounts[0];
+  }else{
+    console.log("No accounts found");
+  }
+
+};
+
+
+export const CONNECT_WALLET = async() => {
+  try{
+
+        if(!window.ethereum) {
+        throw new Error("MetaMask is not installed");
+      }
+      await handleNetworkSwitch();
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      window.location.reload();
+      
+        return accounts[0];
+     
+
+  }catch(error) {
+    console.error("Failed to connect wallet:", error);
+    throw error;
+  } 
+};
+
+const fetchContract = (address ,  abi, signer) =>
+  new ethers.Contract(address, abi, signer);
+
+export const TOKEN_ICO_CONTRACT = async() => {
+  try{
+
+    const web3modal = new Web3modal();
+    const connection = await web3modal.Web3Provider(connection);
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = fetchContract(ADDRESS,ERC20_ABI, signer);
+     
+    return contract;
+
+  }catch(error) {
+    console.error("Failed to connect wallet:", error);
+    throw error;
+  } 
+};
+
+export const ERC20 = async(ADDRESS) => {
+  try{
+
+    const web3modal = new Web3modal();
+    const connection = await web3modal.Web3Provider(connection);
+    const provider = new ethers.providers.Web3Provider(connection);
+    const network = await provider.getNetwork();
+    const signer = await provider.getSigner();
+    const userAddress = await signer.getAddress();
+    const balance = await contract.balanceOf(userAddress);
+
+    const name = await contract.name();
+    const symbol = await contract.symbol();
+    const decimals = await contract.decimals();
+    const totalSupply = await contract.totalSupply();
+
+    const token = {
+      address : address,
+      name: name,
+      symbol: symbol,
+      decimals: decimals,
+      supply : ethers.utils.formatUnits(supply.toString(), decimals),
+      balance: ethers.utils.formatUnits(balance.toString(), decimals),
+      chainId : network.chainId,
+    }
+     console.log("token",token);
+    return token;
+
+  }catch(error) {
+    console.error("Failed to connect wallet:", error);
+    throw error;
+  } 
+};
+
+
+export const ERC20_CONTRACT = async() => {
+try{
+
+    const web3modal = new Web3modal();
+    const connection = await web3modal.Web3Provider(connection);
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = fetchContract(CONTRACT_ADDRESS,ERC20_ABI, signer);
+     
+    return contract;
+
+  }catch(error) {
+    console.error("Failed to connect wallet:", error);
+    throw error;
+  } 
+};
+
+export const GET_BALANCE = async() => {
+    try{
+
+    const web3modal = new Web3modal();
+    const connection = await web3modal.Web3Provider(connection);
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    
+    const maticBal = await signer.getBalance();
+    return ethers.utils.formatEther(maticBal.toString());
+
+  }catch(error) {
+    console.error("Failed to connect wallet:", error);
+    throw error;
+  } 
+};
+
+export const CHECK_ACCOUNT_BALANCE = async(ADDRESS) => {
+    try{
+
+    const web3modal = new Web3modal();
+    const connection = await web3modal.Web3Provider(connection);
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    
+    const maticBal = await signer.getBalance(ADDRESS);
+    return ethers.utils.formatEther(maticBal.toString());
+
+  }catch(error) {
+    console.error("Failed to connect wallet:", error);
+    throw error;
+  } 
+};
+
+
+export const addTokenToMetamask = async() => {
+  if(window.ethereum) {
+    const tokenDetails = await ERC20(TOKEN_ADDRESS);
+    const tokenDecimals = tokenDetails?.decimals;
+    const tokenAddress = TOKEN_ADDRESS;
+    const tokenSymbol = tokenDetails?.symbol;
+    const tokenImage = tokenImage;
+
+    try {
+
+      const wasAdded = await window.ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: tokenAddress,
+            symbol: tokenSymbol,
+            decimals: tokenDecimals,
+            image: tokenImage,
+          },
+        },
+      });
+      if(wasAdded) {
+        console.log("Token added successfully");
+      }else {
+        console.log("Token not added");
+      }
+    }catch(error) {
+      console.error("Failed to add token to MetaMask:", error);
+      throw error;
+    }
+
+  }
+  else {
+    console.error("MetaMask is not installed");
+    throw new Error("MetaMask is not installed");
+  }
+};

@@ -1,10 +1,17 @@
+import toast,{ Toaster } from "react-hot-toast";
+
 import "../styles/globals.css";
+import {TOKEN_ICO_PROVIDER} from "../context/index.js";
 
 export default function App({ Component, pageProps }) {
   return (
     <>
-      <Component {...pageProps} />
-
+      <TOKEN_ICO_PROVIDER>
+        <Component {...pageProps} />
+        <Toaster/>
+      </TOKEN_ICO_PROVIDER>
+        
+      
       <script src="assets/js/jquery-3.5.1.min.js"></script>
       <script src="assets/js/bootstrap.bundle.min.js"></script>
       <script src="assets/js/wow.min.js"></script>
