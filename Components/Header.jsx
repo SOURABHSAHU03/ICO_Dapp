@@ -66,10 +66,41 @@ const Header = ({
       }}
     >
       {/* Logo */}
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <img src="./token.png" alt="Logo" style={{ width: 40, marginRight: 12 }} />
-        <span style={{ fontWeight: "bold", fontSize: 18, color: "#fff" }}>Crypto Exchange</span>
-      </div>
+     <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: "60px",  // Add left padding to avoid sidebar overlap
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    gap: "20px",           // space between logo and text
+    flexWrap: "nowrap",    // prevent wrapping
+    backgroundColor: "black", // dark background
+    width: "15%",
+    boxSizing: "border-box"
+  }}
+>
+  <img
+    src="./token.png"
+    alt="Logo"
+    style={{
+      width: "40px",
+      height: "40px",
+      objectFit: "contain"
+    }}
+  />
+  <span
+    style={{
+      fontWeight: "bold",
+      fontSize: "20px",
+      color: "#00FFFF",
+      whiteSpace: "nowrap"
+    }}
+  >
+    Crypto Exchange
+  </span>
+</div>
+
 
       {/* Navigation */}
       <nav style={{ flex: 1, marginLeft: "60px" }}>

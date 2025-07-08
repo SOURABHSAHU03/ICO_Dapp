@@ -41,6 +41,7 @@ import { TOKEN_ADDRESS } from "../context/constants";
                    addTokenToMetamask,
                    ERC20,
                    TOKEN_ADDRESS,
+                   
                    loader,
                    account,
                    setAccount,
@@ -59,7 +60,7 @@ import { TOKEN_ADDRESS } from "../context/constants";
         //const [account,setAccount] = useState("");
 
         useEffect(() => {
-          //console.log("ADDRESS");
+          console.log("ADDRESS");
           const fetchData = async () => {
             const items = await TOKEN_ICO();
             console.log(items);
@@ -182,7 +183,7 @@ import { TOKEN_ADDRESS } from "../context/constants";
             <About/>
             <Feature/>
             <Token/>
-            <TokenInfo/>
+            <TokenInfo detail={detail} currency = {currency}/>
             <Team/>
             <Faq/>
             <Contact/>

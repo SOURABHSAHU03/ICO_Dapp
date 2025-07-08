@@ -5,12 +5,12 @@ import tokenICO from "./TokenICO.json";
 import erc20 from "./ERC20.json";
 
 
-export const TOKEN_ADDRESS = "0xA6F259a56e4DCA4706A073f052e8171d3Bd12182";
+export const TOKEN_ADDRESS = "0xF6Ccb5E387bD0EA3733449B8D055176D7abd13ee";
 export const ERC20_ABI = erc20.abi;
 
-export const OWNER_ADDRESS = "0xea31e47769f706763B12AFFf8EDe8cFD24cc3414";
+export const OWNER_ADDRESS = "0xeD554E91aeb770aFfA6189213e5B69bEFf77440E";
 
-export const CONTRACT_ADDRESS ="0xAd01964AA20b460fE2c82D3FeaC694B555eb8189";
+export const CONTRACT_ADDRESS ="0x3377d040023A0241640F03Bf64AcAa33975Fb68e";
 export const CONTRACT_ABI = tokenICO.abi;
 
 const networks = {
@@ -182,7 +182,7 @@ export const CONNECT_WALLET = async() => {
   } 
 };
 
-const fetchContract = (address ,  abi, signer) =>
+const fetchContract = (address ,abi, signer) =>
   new ethers.Contract(address, abi, signer);
 
 export const TOKEN_ICO_CONTRACT = async() => {

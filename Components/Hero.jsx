@@ -133,6 +133,18 @@ const Hero = ({
           <img src="assets/img/icon/coin3.png" alt="" />
         </div>
       </div>
+
+      <div className="hero_coin">
+        <div className="icon icon--1">
+          <img src="assets/img/icon/coin4.png" alt="" />
+        </div>
+        <div className="icon icon--2">
+          <img src="assets/img/icon/coin5.png" alt="" />
+        </div>
+        <div className="icon icon--3">
+          <img src="assets/img/icon/coin6.png" alt="" />
+        </div>
+      </div>
     </section>
   );
 };

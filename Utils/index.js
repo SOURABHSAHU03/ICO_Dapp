@@ -18,7 +18,6 @@ export const convertTime = (time) => {
 // Shorten a long wallet address like 0xAbcd...1234
 // Utils/index.js
 export const shortenAddress = (address) => {
-  if (!address || address.length < 10) return address;
-  return `${address.slice(0, 4)}...${address.slice(-4)}`;
+  `${address?.slice(0,4)}...${address?.slice(address.length - 4)}`;
 };
 
