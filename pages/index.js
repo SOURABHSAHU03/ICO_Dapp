@@ -146,8 +146,8 @@ import { TOKEN_ADDRESS } from "../context/constants";
             }
 
             {
-              openUp && (
-                <UpdateAddress setopenUp={setopenUp} 
+              openUpdateAddress && (
+                <UpdateAddress 
                 setOpenUpdateAddress={setOpenUpdateAddress}
                 detail = {detail}
                 UPDATE_TOKEN={UPDATE_TOKEN}
