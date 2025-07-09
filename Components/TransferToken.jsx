@@ -47,7 +47,7 @@ const TransferToken = ({setTransferModel,
               <div className="col-lg-12">
                 {tokenDetails?.name ? (<input type = "text" value = {`Name ${tokenDetails?.name} Balance : ${tokenDetails?.balance} ${tokenDetails?.symbol}`}/>) : (
                   <input type="text" placeholder="_tokenAddress" onChange={(e) => (
-                    setToken({...tokenDetails,_tokenAddress : e.target.value}), setTransferToken(e.target.value)
+                    setToken({...token,_tokenAddress : e.target.value}), setTransferToken(e.target.value)
                   )}/>
 
 
@@ -56,13 +56,13 @@ const TransferToken = ({setTransferModel,
 
               <div className="col-lg-12">
                    <input type="text" placeholder="_sendTo" onChange={(e) => (
-                    setToken({...tokenDetails,_sendTo : e.target.value})
+                    setToken({...token,_sendTo : e.target.value})
                   )}/>
               </div>
 
                <div className="col-lg-12">
-                   <input type="text" placeholder="_sendTo" onChange={(e) => (
-                    setToken({...tokenDetails,_amount : e.target.value})
+                   <input type="text" placeholder="_amount" onChange={(e) => (
+                    setToken({...token,_amount : e.target.value})
                   )}/>
               </div>
              <div className="ico-contract__btn text-center mt-10">

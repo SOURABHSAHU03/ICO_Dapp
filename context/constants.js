@@ -217,7 +217,8 @@ export const ERC20 = async(ADDRESS) => {
     const provider = new ethers.providers.Web3Provider(connection);
     const network = await provider.getNetwork();
     const signer = await provider.getSigner();
-    const userAddress =  signer.getAddress();
+    const userAddress = await signer.getAddress();
+     const contract = new ethers.Contract(ADDRESS, ERC20_ABI, signer);
     const balance = await contract.balanceOf(userAddress);
 
     const name = await contract.name();
@@ -231,7 +232,7 @@ export const ERC20 = async(ADDRESS) => {
       name: name,
       symbol: symbol,
       decimals: decimals,
-      supply : ethers.utils.formatUnits(supply.toString(), decimals),
+      supply : ethers.utils.formatUnits(totalSupply.toString(), decimals),
       balance: ethers.utils.formatUnits(balance.toString(), decimals),
       chainId : network.chainId,
     }
