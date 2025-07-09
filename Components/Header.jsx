@@ -166,13 +166,13 @@ const Header = ({
               padding: "10px 18px",
               borderRadius: "8px",
               fontWeight: "bold",
-              color: "#fff",
+              color: "black",
               cursor: "pointer",
               fontSize: 13,
             }}
             onClick={() => navigator.clipboard.writeText(detail?.address)}
           >
-            {shortenAddress(detail?.address)}: {detail?.maticBal?.slice(0, 6)} {currency}
+            {shortenAddress(detail?.address)} {detail?.address}: {detail?.maticBal?.slice(0, 6)} {currency}
           </a>
         ) : (
           <a

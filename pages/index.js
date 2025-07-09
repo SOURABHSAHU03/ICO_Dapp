@@ -51,7 +51,7 @@ import { TOKEN_ADDRESS } from "../context/constants";
         const [ownerModel, setOwnerModel] = useState(false);
         const [buyModel, setBuyModel] = useState(false);
         const [transferModel, setTransferModel] = useState(false);
-        const [TransferCurrency, setTransferCurrency] = useState(false);
+        const [transferCurrency, setTransferCurrency] = useState(false);
         const [openDonate,setOpenDonate] = useState(false);
         const [openUpdatePrice,setOpenUpdatePrice] = useState(false);
         const [openUpdateAddress,setOpenUpdateAddress] = useState(false);
@@ -110,7 +110,7 @@ import { TOKEN_ADDRESS } from "../context/constants";
 
             {
 
-              TransferCurrency && (
+              transferCurrency && (
                 <TransferCurrency setTransferCurrency={setTransferCurrency}
                 TRANSFER_ETHER={TRANSFER_ETHER}
                 detail = {detail}
