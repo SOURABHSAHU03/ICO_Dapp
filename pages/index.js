@@ -29,7 +29,7 @@ import {Footer,
 import { TOKEN_ADDRESS } from "../context/constants";
  const index = () => {
    const { 
-           TOKEN_ICO,
+                   TOKEN_ICO,
                    BUY_TOKEN,
                    TRANSFER_ETHER,
                    DONATE,
@@ -40,13 +40,13 @@ import { TOKEN_ADDRESS } from "../context/constants";
                    TRANSFER_TOKEN,
                    addTokenToMetamask,
                    ERC20,
-                   TOKEN_ADDRESS,
-                   
-                   loader,
-                   account,
+                   CHECK_ACCOUNT_BALANCE,
                    setAccount,
                    setLoader,
-                   currency} = useContext(TOKEN_ICO_CONTEXT);
+                   TOKEN_ADDRESS,
+                   loader,
+                   account,
+                   currency,} = useContext(TOKEN_ICO_CONTEXT);
        
         const [ownerModel, setOwnerModel] = useState(false);
         const [buyModel, setBuyModel] = useState(false);
@@ -54,6 +54,7 @@ import { TOKEN_ADDRESS } from "../context/constants";
         const [TransferCurrency, setTransferCurrency] = useState(false);
         const [openDonate,setOpenDonate] = useState(false);
         const [openUpdatePrice,setOpenUpdatePrice] = useState(false);
+        const [openUpdateAddress,setOpenUpdateAddress] = useState(false);
         const [openUp,setopenUp] = useState(false);
 
         const [detail,setDetail] = useState();

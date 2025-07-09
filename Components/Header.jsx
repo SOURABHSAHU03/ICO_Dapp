@@ -32,22 +32,30 @@ const Header = ({
     };
   }, []);
 
-  const connectMetaMask = async () => {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+ const connectMetaMask = async () => {
+  if (typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask) {
+    try {
+      setLoader(true);
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      if (accounts.length > 0) {
         setAccount(accounts[0]);
-        setLoader(true);
-        await CONNECT_WALLET();
-        setLoader(false);
-      } catch (error) {
-        console.error("Error connecting to MetaMask:", error);
-        setLoader(false);
+        //await CONNECT_WALLET(); // Optional, only if needed
       }
-    } else {
-      alert("MetaMask not installed");
+      setLoader(false);
+    } catch (error) {
+      setLoader(false);
+      if (error.code === 4001) {
+        alert("Connection rejected by user.");
+      } else {
+        console.error("Error connecting to MetaMask:", error);
+        alert("Failed to connect MetaMask. See console for details.");
+      }
     }
-  };
+  } else {
+    alert("MetaMask is not installed. Please install it to continue.");
+  }
+};
+
 
   return (
     <header

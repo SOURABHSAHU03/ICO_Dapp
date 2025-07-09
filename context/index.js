@@ -1,7 +1,9 @@
 import React,{useState,useEffect} from "react";
 import {ethers} from "ethers";
 import toast from "react-hot-toast";
-
+import axios from "axios";
+// import toast from "react-hot-toast";
+// import {useRouter} from "next/router";
 
 import {
     CHECK_WALLET_CONNECTED,
@@ -14,6 +16,7 @@ import {
     TOKEN_ICO_CONTRACT,
     ERC20,
     ERC20_CONTRACT,
+    CHECK_ACCOUNT_BALANCE,
     addTokenToMetamask,
 }from "./constants";
 
@@ -52,39 +55,86 @@ export const TOKEN_ICO_PROVIDER = ({children}) => {
     }
 
 
-const TOKEN_ICO = async() => {
-        try{
-            const address = await CHECK_WALLET_CONNECTED();
-            if(address){
-                setLoader(true);
-                setAccount(address);
-                const contract = await TOKEN_ICO_CONTRACT();
-                const tokenDetails = await contract.getTokenDetails();
-                const contractOwner = await contract.owner();
-                const soldTokens = await contract.soldTokens();
-                const ethBal = await GET_BALANCE(address);
-                const token = {
-                    tokenBal : ethers.utils.formatEther(tokenDetails.balance.toString()),
-                    name : tokenDetails.name,
-                    symbol : tokenDetails.symbol,
-                    supply : ethers.utils.formatEther(tokenDetails.supply.toString()),
-                    decimals : tokenDetails.decimals,
-                    tokenPrice : ethers.utils.formatEther(tokenDetails.tokenPrice.toString()),
-                    tokenAddr : tokenDetails.tokenAddr,
-                    maticBal : ethBal,
-                    address : address.toLowerCase(),
-                    owner : contractOwner.toLowerCase(),
-                    soldTokens : soldTokens.toNumber(),
-                };
-                setLoader(false);
-                return token;
-            }
-        }catch(error) {
-            console.error("Failed to fetch token ICO contract:", error);
-            notifyError("Failed to fetch token ICO contract");
-        }
+// const TOKEN_ICO = async() => {
+//         try{
+//             const address = await CHECK_WALLET_CONNECTED();
+//             if(address){
+//                 setLoader(true);
+//                 setAccount(address);
+//                 const contract = await TOKEN_ICO_CONTRACT();
+//                 const tokenDetails = await contract.getTokenDetails();
+//                 const contractOwner = await contract.owner();
+//                 const soldTokens = await contract.soldTokens();
+//                 const ethBal = await GET_BALANCE(address);
+//                 const token = {
+//                     tokenBal : ethers.utils.formatEther(tokenDetails.balance.toString()),
+//                     name : tokenDetails.name,
+//                     symbol : tokenDetails.symbol,
+//                     supply : ethers.utils.formatEther(tokenDetails.supply.toString()),
+//                     decimals : tokenDetails.decimals,
+//                     tokenPrice : ethers.utils.formatEther(tokenDetails.tokenPrice.toString()),
+//                     tokenAddr : tokenDetails.tokenAddr,
+//                     maticBal : ethBal,
+//                     address : address.toLowerCase(),
+//                     owner : contractOwner.toLowerCase(),
+//                     soldTokens : soldTokens.toNumber(),
+//                 };
+//                 setLoader(false);
+//                 return token;
+//             }
+//         }catch(error) {
+//             console.error("Failed to fetch token ICO contract:", error);
+//             notifyError("Failed to fetch token ICO contractiiii");
+//         }
 
+// };
+
+const TOKEN_ICO = async () => {
+  try {
+    const address = await CHECK_WALLET_CONNECTED();
+    if (!address) return;
+
+    setLoader(true);
+    setAccount(address);
+
+    const contract = await TOKEN_ICO_CONTRACT();
+    if (!contract) {
+  console.error("Contract instance is undefined");
+  return;
+}
+
+    const tokenDetails = await contract.getTokenDetails();
+    const contractOwner = await contract.owner();
+    const soldTokens = await contract.soldTokens();
+    const ethBal = await GET_BALANCE(address);
+
+    // Debug: log the raw response
+    console.log("Token Details:", tokenDetails);
+    console.log(123456);
+
+    const token = {
+      tokenBal: ethers.utils.formatEther(tokenDetails.supply), // or use ERC20.balanceOf?
+      name: tokenDetails.name,
+      symbol: tokenDetails.symbol,
+      supply: ethers.utils.formatEther(tokenDetails.supply),
+      decimals: 18,
+      tokenPrice: ethers.utils.formatEther(tokenDetails.tokenPrice),
+      tokenAddr: tokenDetails.tokenAddr,
+      maticBal: ethBal,
+      address: address.toLowerCase(),
+      owner: contractOwner.toLowerCase(),
+      soldTokens: soldTokens.toNumber(),
+    };
+
+    setLoader(false);
+    return token;
+  } catch (error) {
+    console.error("TOKEN_ICO Error:", error);
+    toast.error("Error fetching token ICO details");
+    setLoader(false);
+  }
 };
+
 
 const BUY_TOKEN = async(amount) => {
         try{
@@ -317,6 +367,7 @@ return (
         TRANSFER_TOKEN,
         addTokenToMetamask,
         ERC20,
+        CHECK_ACCOUNT_BALANCE,
         setAccount,
         setLoader,
         TOKEN_ADDRESS,

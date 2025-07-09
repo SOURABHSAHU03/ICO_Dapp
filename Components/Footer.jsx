@@ -145,6 +145,18 @@ const Footer = () => {
         </div>
       </div>
     </div>
+    <div className="token-info__shape">
+      <div className="shape shape--1">
+        <img src="assets/img/shape/s_shape1.png" alt="" />
+      </div>
+      <div className="shape shape--2">
+        <img src="assets/img/shape/s_shape2.png" alt="" />
+      </div>
+
+      <div className="shape shape--2">
+        <img src="assets\img\bg\footer_bg.png" alt="" />
+      </div>
+    </div>
   </footer>
 };
 

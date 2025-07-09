@@ -14,7 +14,7 @@ interface ERC20 {
 
 contract TokenICO {
     address public owner;
-    //ERC20 public token;
+    ERC20 public token;
     address public tokenAddress; // changed from uint256 to address
     uint256 public tokenSalePrice;
     uint256 public soldTokens;
@@ -30,7 +30,7 @@ contract TokenICO {
 
     function updateToken(address _tokenAddress) public onlyOwner{
         tokenAddress = _tokenAddress;
-        // token = ERC20(tokenAddress); // removed shadowing local variable
+        token = ERC20(tokenAddress); // removed shadowing local variable
     }
 
     function updateTokenSalePrice(uint256 _tokenSalePrice) public onlyOwner {

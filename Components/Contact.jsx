@@ -63,7 +63,20 @@ const ContactMe = () => {
         />
         <button type="submit" style={styles.button}>Send</button>
       </form>
+      <div className="token-info__shape">
+      <div className="shape shape--1">
+        <img src="assets/img/shape/s_shape1.png" alt="" />
+      </div>
+      <div className="shape shape--2">
+        <img src="assets/img/shape/s_shape2.png" alt="" />
+      </div>
+
+      <div className="shape shape--2">
+        <img src="assets\img\icon\bitcoin_icon.png" alt="" />
+      </div>
     </div>
+    </div>
+    
   );
 };
 
@@ -119,6 +132,7 @@ const styles = {
     marginBottom: "10px",
     color: "#000",
   },
+  
 };
 
 export default ContactMe;

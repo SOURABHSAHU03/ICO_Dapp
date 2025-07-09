@@ -31,7 +31,7 @@ const Faq = () => {
   };
 
   return (
-    <section id="faq" className="faq pos-rel pt-140 pb-105" style={{ backgroundColor: "#0f172a", color: "#fff" }}>
+    <section id="faq" className="faq pos-rel pt-140 pb-105" style={{ backgroundColor: "", color: "#fff" }}>
       <div className="container">
         <div className="sec-title text-center mb-5">
           <h5 style={{ color: "#38bdf8", fontWeight: 600 }}>FAQ</h5>
@@ -78,6 +78,18 @@ const Faq = () => {
           </ul>
         </div>
       </div>
+      <div className="token-info__shape">
+      <div className="shape shape--1">
+        <img src="assets/img/shape/s_shape1.png" alt="" />
+      </div>
+      <div className="shape shape--2">
+        <img src="assets/img/shape/s_shape2.png" alt="" />
+      </div>
+
+      <div className="shape shape--2">
+        <img src="assets/img/shape/ti_shape.png" alt="" />
+      </div>
+    </div>
     </section>
   );
 };
