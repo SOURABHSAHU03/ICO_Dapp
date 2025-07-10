@@ -20,6 +20,7 @@ export const ERC20_ABI = erc20.abi;
 export const OWNER_ADDRESS = "0xea31e47769f706763B12AFFf8EDe8cFD24cc3414";
 
 export const CONTRACT_ADDRESS ="0xad01964aa20b460fe2c82d3feac694b555eb8189";
+// export const CONTRACT_ADDRESS ="0xA6F259a56e4DCA4706A073f052e8171d3Bd12182";
 export const CONTRACT_ABI = tokenICO.abi;
 
 const networks = {
@@ -304,7 +305,7 @@ export const addTokenToMetamask = async() => {
     const tokenDecimals = tokenDetails?.decimals;
     const tokenAddress = TOKEN_ADDRESS;
     const tokenSymbol = tokenDetails?.symbol;
-    const tokenImage = tokenImage;
+    const tokenImag = await tokenImage;
 
     try {
 
@@ -316,12 +317,13 @@ export const addTokenToMetamask = async() => {
             address: tokenAddress,
             symbol: tokenSymbol,
             decimals: tokenDecimals,
-            image: tokenImage,
+            image: tokenImag,
           },
         },
       });
       if(wasAdded) {
         console.log("Token added successfully");
+        
       }else {
         console.log("Token not added");
       }
@@ -336,6 +338,46 @@ export const addTokenToMetamask = async() => {
     throw new Error("MetaMask is not installed");
   }
 };
+
+
+
+// TRANSFER_ETHER function
+export const TRANSFER_ETHER = async (transfer) => {
+  const { _receiver, _amount } = transfer;
+
+  try {
+    if (!window.ethereum) {
+      throw new Error("MetaMask is not installed");
+    }
+
+    if (!ethers.utils.isAddress(_receiver)) {
+      throw new Error("Invalid Ethereum address");
+    }
+
+    const amountInEth = _amount.toString().trim();
+
+    if (!amountInEth || isNaN(amountInEth) || Number(amountInEth) <= 0) {
+      throw new Error("Invalid ETH amount");
+    }
+
+    const amountInWei = ethers.utils.parseEther(amountInEth); // 🔐 SAFE
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    const tx = await contract.transferEther(_receiver, amountInWei);
+    await tx.wait();
+
+    return "Ether transfer successful ✅";
+  } catch (error) {
+    console.error("TRANSFER_ETHER error:", error);
+    throw new Error(error?.reason || error?.message || "Ether transfer failed ❌");
+  }
+};
+
+
+
 
 
 

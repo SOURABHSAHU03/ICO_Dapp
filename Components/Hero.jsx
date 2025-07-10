@@ -21,19 +21,13 @@ const Hero = ({
   });
 
   const connectWallet = async () => {
-    try {
       setLoader(true);
       const address = await CONNECT_WALLET();
       if (address) setAccount(address);
-      else notifyError("Wallet connection failed.");
-    } catch (error) {
-      notifyError("MetaMask connection error.");
-    } finally {
-      setLoader(false);
-    }
+    
   };
 
-  const [percentage, setPercentage] = useState(0);
+  const [percentage, setPercentage] = useState();
 
   useEffect(() => {
     const calculatePercentage = () => {
@@ -50,15 +44,10 @@ const Hero = ({
   }, [detail]);
 
   const ADD_TOKEN_METAMASK = async () => {
-    try {
-      setLoader(true);
-      const success = await addTokenToMetamask();
-      success ? notifySuccess("Token added to MetaMask") : notifyError("Failed to add token");
-    } catch {
-      notifyError("Error adding token");
-    } finally {
-      setLoader(false);
-    }
+   setLoader(true);
+   const response = await addTokenToMetamask();
+   setLoader(false);
+   notifySuccess("token added");
   };
 
    const sectionStyle = {
@@ -167,61 +156,165 @@ const Hero = ({
     "assets/img/icon/coin6.png"
   ];
 
-  return (
-    <section style={sectionStyle}>
-      {/* Background shapes/icons */}
-      <div style={backgroundWrapper}>
-        {shapes.map((src, i) => (
-          <img
-            key={`shape-${i}`}
-            src={src}
-            alt={`shape-${i}`}
-            style={{
-              ...bgItemStyle,
-              top: `${i * 15 + 5}%`,
-              left: `${i * 10 + 5}%`
-            }}
-          />
-        ))}
-        {coins.map((src, i) => (
-          <img
-            key={`coin-${i}`}
-            src={src}
-            alt={`coin-${i}`}
-            style={{
-              ...bgItemStyle,
-              bottom: `${i * 10 + 5}%`,
-              right: `${i * 10 + 5}%`
-            }}
-          />
-        ))}
-      </div>
+//   return (
+//     <section className="hero hero__ico pos-rel ">
+//       <div className="hero__bg " data-background = "assets/img/bg/hero_bg.png">
+//         <div className="container">
+//               <div className="row">
+//                 <div className="col-lg-7">
+//                   <div className="hero__content">
+//                     <h1 className="title mt-160"> 
+//                               Participate in the <span>On going ICO Token</span>
+//                     </h1>
+//                     <div className="btns">
+//                      {account ? (
+//               <button onClick={() => setBuyModel(true)} >PURCHASE TOKENS</button>
+//             ) : (
+//               <button onClick={connectWallet} >CONNECT WALLET</button>
+//             )}
+//             <button onClick={ADD_TOKEN_METAMASK} >ADD METAMASK</button>
 
-      {/* Foreground content */}
-      <div style={contentWrapper}>
+//                     </div>
+//                       <div className="hero__progress mt-50">
+//                         <div className="progress-title ul_li_between">
+//                           <span>
+//                             <span>
+//                               Raised- 
+//                             </span>
+//                             {detail?.soldTokens} Tokens
+//                           </span>
+
+//                           <span>
+//                             <span>
+//                               Total ICO- 
+//                             </span>
+//                             {detail?.soldTokens + Number(detail?.tokenBal)} {detail?.symbol}
+//                           </span>
+//                         </div>
+
+//                         <div className="progress">
+//                           <div className="progress-bar" role="progressbar" style = {{
+//                             width : `${percentage}`
+//                           }}/>
+
+                          
+
+//                         </div>
+//                         <ul className="ul_li_between">
+//                           <li>Pre Sell</li>
+//                           <li>Soft Cap</li>
+//                           <li>Bonus</li>
+//                         </ul>
+//                       </div>
+
+//                   </div>
+//                   </div> 
+//                         <div className="col-lg-5">
+//                           <div className="hero__explore-wrap text-center">
+//                             <div className="hero__explore tet-center">
+//                                 <div className="scroll-down"/>
+
+//                                <span>
+//                                 Explore 
+//                                </span>
+
+
+//                             </div >
+//                             <div className="hero__countdown">
+//                               <h6 className="text-center"> ICO Will Start In .....</h6>
+//                             </div>
+
+//                           </div>
+
+//                         </div>
+//               </div>
+//           </div> 
+
+//       </div>
+
+//       <div className="hero__shape ">
+//             <div className="shape shape--1 ">
+//               <img src="assets/img/shape/h_shape.png" alt="" /> 
+
+//             </div>
+//             <div className="shape shape--2">
+//               <img src="assets/img/shape/h_shape.png" alt="" /> 
+
+//             </div>
+//             <div className="shape shape--2">
+//               <img src="assets/img/shape/s_shape2.png" alt="" /> 
+
+//             </div>
+           
+           
+//       </div>
+
+        // <div className="hero__coin ">
+        //     <div className="coin coin--1">
+        //       <img src="assets/img/icon/coin1.png" alt="" /> 
+
+        //     </div>
+        //     <div className="coin coin--2">
+        //       <img src="assets/img/icon/coin2.png" alt="" /> 
+
+        //     </div>
+        //     <div className="coin coin--3">
+        //       <img src="assets/img/icon/coin3.png" alt="" /> 
+
+        //     </div>
+        //   </div>
+        //     <div className="hero__coin mt-100">
+        //     <div className="coin coin--1">
+        //       <img src="assets/img/icon/coin3.png" alt="" /> 
+
+        //     </div>
+        //     <div className="coin coin--2">
+        //       <img src="assets/img/icon/coin4.png" alt="" /> 
+
+        //     </div>
+        //     <div className="coin coin--3">
+        //       <img src="assets/img/icon/coin5.png" alt="" /> 
+
+        //     </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default Hero;
+
+
+  return (
+    <section style={{ paddingTop: "120px", paddingBottom: "60px", backgroundColor: "#000", color: "#fff", position: "relative",height:"100vh" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px", display: "flex", flexWrap: "wrap", gap: "40px", justifyContent: "space-between" }}>
         <div style={{ flex: "1 1 600px" }}>
-          <h1 style={heading}>
+          <h1 style={{ fontSize: "2.5rem", marginBottom: "20px", lineHeight: "1.3" }}>
             Participate in the <span style={{ color: "#38bdf8" }}>Ongoing ICO Token</span>
           </h1>
 
-          <div style={btnGroup}>
+          <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "30px" }}>
             {account ? (
               <button onClick={() => setBuyModel(true)} style={btnPrimary}>PURCHASE TOKENS</button>
             ) : (
               <button onClick={connectWallet} style={btnPrimary}>CONNECT WALLET</button>
             )}
             <button onClick={ADD_TOKEN_METAMASK} style={btnSecondary}>ADD METAMASK</button>
-          </div>
+         </div>
 
           <div>
             <p><strong>Raised:</strong> {detail?.soldTokens || 0} Tokens</p>
             <p><strong>Total ICO:</strong> {(Number(detail?.soldTokens || 0) + Number(detail?.tokenBal || 0)).toFixed(2)} {detail?.symbol || ""}</p>
 
-            <div style={progressBarOuter}>
-              <div style={progressBarInner}></div>
+            <div style={{ height: "10px", backgroundColor: "#222", borderRadius: "5px", overflow: "hidden", marginTop: "10px" }}>
+              <div style={{
+                width: `${percentage}%`,
+                height: "100%",
+                backgroundColor: "#00FF99",
+                transition: "width 0.4s ease"
+              }}></div>
             </div>
 
-            <ul style={progressLabels}>
+            <ul style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginTop: "8px", color: "#aaa" }}>
               <li>Pre Sell</li>
               <li>Soft Cap</li>
               <li>Bonus</li>
@@ -237,111 +330,85 @@ const Hero = ({
           </div>
           <h6 style={{ color: "#ccc", fontWeight: 400, fontSize: "1rem" }}>ICO Will Start In...</h6>
         </div>
+
+         <div className="hero__coin  mt-500">
+            <div className="coin coin--1">
+              <img src="assets/img/icon/coin1.png" alt="" /> 
+
+            </div>
+            <div className="coin coin--2">
+              <img src="assets/img/icon/coin2.png" alt="" /> 
+
+            </div>
+            <div className="coin coin--3">
+              <img src="assets/img/icon/coin3.png" alt="" /> 
+
+            </div>
+             <div className="coin coin--4">
+              <img src="assets/img/icon/coin3.png" alt="" /> 
+
+            </div>
+            <div className="coin coin--5">
+              <img src="assets/img/icon/coin4.png" alt="" /> 
+
+            </div>
+            <div className="coin coin--6">
+              <img src="assets/img/icon/coin5.png" alt="" /> 
+          </div>
+            <div className="hero__coin pos-rel flex">
+            <div className="coin coin--1">
+              <img src="assets/img/icon/coin3.png" alt="" /> 
+
+            </div>
+            <div className="coin coin--2">
+              <img src="assets/img/icon/coin4.png" alt="" /> 
+
+            </div>
+            <div className="coin coin--3">
+              <img src="assets/img/icon/coin5.png" alt="" /> 
+
+            </div>
+            </div>
+            </div>
+
       </div>
 
-    <div className="token-info__shape">
-      <div className="shape shape--1">
-        <img src="assets/img/icon/coin1.png" alt="" />
-      </div>
-      <div className="shape shape--2">
-        <img src="assets/img/icon/coin2.png" alt="" />
-      </div>
+          {/* <section className="min-h-screen w-full bg-gradient-to-br from-[#0b0d2b] to-[#10133c] p-8">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-6 place-items-center">
+            
+              <img src="assets/img/shape/h_shape.png" alt="Shape 1" className="w-20 h-20 object-contain" />
+              <img src="assets/img/shape/h_shape2.png" alt="Shape 2" className="w-20 h-20 object-contain" />
+              <img src="assets/img/shape/h_shape3.png" alt="Shape 3" className="w-20 h-20 object-contain" />
 
-      <div className="shape shape--2">
-        <img src="assets/img/icon/coin4.png" alt="" />
-      </div>
-    </div>
+             
+              <img src="assets/img/icon/coin1.png" alt="Coin 1" className="w-20 h-20 object-contain" />
+              <img src="assets/img/icon/coin2.png" alt="Coin 2" className="w-20 h-20 object-contain" />
+              <img src="assets/img/icon/coin3.png" alt="Coin 3" className="w-20 h-20 object-contain" />
+              <img src="assets/img/icon/coin4.png" alt="Coin 4" className="w-20 h-20 object-contain" />
+              <img src="assets/img/icon/coin5.png" alt="Coin 5" className="w-20 h-20 object-contain" />
+              <img src="assets/img/icon/coin6.png" alt="Coin 6" className="w-20 h-20 object-contain" />
+            </div>
+          </section> */}
+
+
     </section>
   );
 };
 
+const btnPrimary = {
+  padding: "10px 20px",
+  border: "none",
+  borderRadius: "6px",
+  backgroundColor: "#FF4500",
+  color: "#fff",
+  fontWeight: "600",
+  cursor: "pointer",
+  fontSize: "15px"
+};
+
+const btnSecondary = {
+  ...btnPrimary,
+  backgroundColor: "#1E90FF"
+};
+
 export default Hero;
-
-
-//   return (
-//     <section style={{ paddingTop: "120px", paddingBottom: "60px", backgroundColor: "#000", color: "#fff", position: "relative" }}>
-//       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 20px", display: "flex", flexWrap: "wrap", gap: "40px", justifyContent: "space-between" }}>
-//         <div style={{ flex: "1 1 600px" }}>
-//           <h1 style={{ fontSize: "2.5rem", marginBottom: "20px", lineHeight: "1.3" }}>
-//             Participate in the <span style={{ color: "#38bdf8" }}>Ongoing ICO Token</span>
-//           </h1>
-
-//           <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", marginBottom: "30px" }}>
-//             {account ? (
-//               <button onClick={() => setBuyModel(true)} style={btnPrimary}>PURCHASE TOKENS</button>
-//             ) : (
-//               <button onClick={connectWallet} style={btnPrimary}>CONNECT WALLET</button>
-//             )}
-//             <button onClick={ADD_TOKEN_METAMASK} style={btnSecondary}>ADD METAMASK</button>
-//           </div>
-
-//           <div>
-//             <p><strong>Raised:</strong> {detail?.soldTokens || 0} Tokens</p>
-//             <p><strong>Total ICO:</strong> {(Number(detail?.soldTokens || 0) + Number(detail?.tokenBal || 0)).toFixed(2)} {detail?.symbol || ""}</p>
-
-//             <div style={{ height: "10px", backgroundColor: "#222", borderRadius: "5px", overflow: "hidden", marginTop: "10px" }}>
-//               <div style={{
-//                 width: `${percentage}%`,
-//                 height: "100%",
-//                 backgroundColor: "#00FF99",
-//                 transition: "width 0.4s ease"
-//               }}></div>
-//             </div>
-
-//             <ul style={{ display: "flex", justifyContent: "space-between", fontSize: "14px", marginTop: "8px", color: "#aaa" }}>
-//               <li>Pre Sell</li>
-//               <li>Soft Cap</li>
-//               <li>Bonus</li>
-//               <li>Sell</li>
-//             </ul>
-//           </div>
-//         </div>
-
-//         <div style={{ flex: "1 1 400px", textAlign: "center" }}>
-//           <div style={{ marginBottom: "20px" }}>
-//             <div className="scroll-down" />
-//             <span style={{ color: "#38bdf8" }}>Explore Causes</span>
-//           </div>
-//           <h6 style={{ color: "#ccc", fontWeight: 400, fontSize: "1rem" }}>ICO Will Start In...</h6>
-//         </div>
-//       </div>
-
-//           {/* <section className="min-h-screen w-full bg-gradient-to-br from-[#0b0d2b] to-[#10133c] p-8">
-//             <div className="grid grid-cols-3 md:grid-cols-6 gap-6 place-items-center">
-            
-//               <img src="assets/img/shape/h_shape.png" alt="Shape 1" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/shape/h_shape2.png" alt="Shape 2" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/shape/h_shape3.png" alt="Shape 3" className="w-20 h-20 object-contain" />
-
-             
-//               <img src="assets/img/icon/coin1.png" alt="Coin 1" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/icon/coin2.png" alt="Coin 2" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/icon/coin3.png" alt="Coin 3" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/icon/coin4.png" alt="Coin 4" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/icon/coin5.png" alt="Coin 5" className="w-20 h-20 object-contain" />
-//               <img src="assets/img/icon/coin6.png" alt="Coin 6" className="w-20 h-20 object-contain" />
-//             </div>
-//           </section> */}
-
-
-//     </section>
-//   );
-// };
-
-// const btnPrimary = {
-//   padding: "10px 20px",
-//   border: "none",
-//   borderRadius: "6px",
-//   backgroundColor: "#FF4500",
-//   color: "#fff",
-//   fontWeight: "600",
-//   cursor: "pointer",
-//   fontSize: "15px"
-// };
-
-// const btnSecondary = {
-//   ...btnPrimary,
-//   backgroundColor: "#1E90FF"
-// };
-
-// export default Hero;

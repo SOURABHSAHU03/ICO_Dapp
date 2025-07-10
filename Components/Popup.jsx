@@ -21,7 +21,7 @@ const Popup = ( {setBuyModel ,
               
                 },[]);
  return (
-    <section className="new-margin ico-contract pos-rel">
+    <section className="new-margin ico-contract pos-rel ">
       <div className="container">
           <div className="ico-contract__wrap"> 
             <h2 className="tilte">
@@ -53,7 +53,7 @@ const Popup = ( {setBuyModel ,
 
                <div className="col-lg-12">
                    <input type="text" placeholder="_sendTo" onChange={(e) => (
-                    setToken({...tokenDetails,_amount : e.target.value})
+                    setTransferToken({...transferToken,_amount : e.target.value})
                   )}/>
               </div>
              <div className="ico-contract__btn text-center mt-10">

@@ -28,7 +28,7 @@ const TransferToken = ({setTransferModel,
             console.log(token);
           }
           setLoader(false);
-      };
+      }
       loadToken();
     }
 
