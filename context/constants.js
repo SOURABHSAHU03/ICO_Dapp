@@ -195,13 +195,33 @@ export const CONNECT_WALLET = async() => {
 const fetchContract = (address ,abi, signer) =>
   new ethers.Contract(address, abi, signer);
 
+// export const TOKEN_ICO_CONTRACT = async () => {
+//   try {
+//     const web3modal = new Web3modal();
+//     const connection = await web3modal.connect();
+//     const provider = new ethers.providers.Web3Provider(connection);
+//     const signer = provider.getSigner();
+
+//     const contract = fetchContract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+//     return contract;
+//   } catch (error) {
+//     console.error("Failed to connect TOKEN_ICO_CONTRACT:", error);
+//     throw error;
+//   }
+// };
 export const TOKEN_ICO_CONTRACT = async () => {
   try {
-    const web3modal = new Web3modal();
-    const connection = await web3modal.connect();
-    const provider = new ethers.providers.Web3Provider(connection);
-    const signer = provider.getSigner();
+    let provider;
+    if (window.ethereum) {
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+    } else {
+      const web3modal = new Web3modal();
+      const connection = await web3modal.connect();
+      provider = new ethers.providers.Web3Provider(connection);
+    }
 
+    const signer = provider.getSigner();
     const contract = fetchContract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
     return contract;
   } catch (error) {
@@ -209,6 +229,7 @@ export const TOKEN_ICO_CONTRACT = async () => {
     throw error;
   }
 };
+
 
 export const ERC20 = async(ADDRESS) => {
   try{
@@ -342,39 +363,75 @@ export const addTokenToMetamask = async() => {
 
 
 // TRANSFER_ETHER function
-export const TRANSFER_ETHER = async (transfer) => {
-  const { _receiver, _amount } = transfer;
+// export const TRANSFER_ETHER = async (transfer) => {
+//   const { _receiver, _amount } = transfer;
 
-  try {
-    if (!window.ethereum) {
-      throw new Error("MetaMask is not installed");
-    }
+//   try {
+//     if (!window.ethereum) {
+//       throw new Error("MetaMask is not installed");
+//     }
 
-    if (!ethers.utils.isAddress(_receiver)) {
-      throw new Error("Invalid Ethereum address");
-    }
+//     if (!ethers.utils.isAddress(_receiver)) {
+//       throw new Error("Invalid Ethereum address");
+//     }
 
-    const amountInEth = _amount.toString().trim();
+//     const amountInEth = _amount.toString().trim();
 
-    if (!amountInEth || isNaN(amountInEth) || Number(amountInEth) <= 0) {
-      throw new Error("Invalid ETH amount");
-    }
+//     if (!amountInEth || isNaN(amountInEth) || Number(amountInEth) <= 0) {
+//       throw new Error("Invalid ETH amount");
+//     }
 
-    const amountInWei = ethers.utils.parseEther(amountInEth); // 🔐 SAFE
+//     const amountInWei = ethers.utils.parseEther(amountInEth);
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+//     const provider = new ethers.providers.Web3Provider(window.ethereum);
+//     const signer = provider.getSigner();
 
-    const tx = await contract.transferEther(_receiver, amountInWei);
-    await tx.wait();
+//     const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer); // ✅ FIXED ABI
 
-    return "Ether transfer successful ✅";
-  } catch (error) {
-    console.error("TRANSFER_ETHER error:", error);
-    throw new Error(error?.reason || error?.message || "Ether transfer failed ❌");
-  }
-};
+//     const tx = await contract.tranferEther(_receiver, amountInWei);
+//     await tx.wait();
+
+//     return "Ether transfer successful ✅";
+//   } catch (error) {
+//     console.error("TRANSFER_ETHER error:", error);
+//     throw new Error(error?.reason || error?.message || "Ether transfer failed ❌");
+//   }
+// };
+
+
+// export const BUY_TOKEN = async (_tokenAmount) => {
+//   try {
+//     if (!window.ethereum) {
+//       throw new Error("MetaMask is not installed");
+//     }
+
+//     if (!_tokenAmount || isNaN(_tokenAmount) || Number(_tokenAmount) <= 0) {
+//       throw new Error("Invalid token amount");
+//     }
+
+//     const provider = new ethers.providers.Web3Provider(window.ethereum);
+//     const signer = provider.getSigner();
+
+//     const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer); // ✅ FIXED ABI
+
+//     const totalPriceInEth = ethers.utils.parseEther(
+//       (Number(_tokenAmount) * Number(tokenSalePrice)).toString()
+//     );
+
+//     const tokenAmount = ethers.BigNumber.from(_tokenAmount.toString());
+
+//     const tx = await contract.buyToken(tokenAmount, {
+//       value: totalPriceInEth,
+//     });
+
+//     await tx.wait();
+
+//     return `Successfully bought ${_tokenAmount} tokens ✅`;
+//   } catch (error) {
+//     console.error("BUY_TOKEN error:", error);
+//     throw new Error(error?.reason || error?.message || "Buy token failed ❌");
+//   }
+// };
 
 
 

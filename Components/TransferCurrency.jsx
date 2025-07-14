@@ -117,7 +117,7 @@ const TransferCurrency = ({
           console.log("Receiver balance:", balance);
         }
         setLoader(false);
-      }
+      };
       loadBalance();
     }
   }, [address]);
@@ -126,7 +126,7 @@ const TransferCurrency = ({
     try {
       setLoader(true);
       const message = await TRANSFER_ETHER(transfer); // Assumes transfer has _amount and _receiver
-      toast.success(message); // Optional toast
+      toast.success(message,"succesfully transeferd"); // Optional toast
     } catch (err) {
       toast.error(err.message || "Transfer failed"); // Optional toast
     } finally {

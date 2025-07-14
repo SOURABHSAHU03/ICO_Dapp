@@ -99,21 +99,21 @@ const TOKEN_ICO = async () => {
 
     const contract = await TOKEN_ICO_CONTRACT();
     if (!contract) {
-  console.error("Contract instance is undefined");
-  return;
-}
+      console.error("Contract instance is undefined");
+      toast.error("Contract not found");
+      setLoader(false);
+      return;
+    }
 
-    const tokenDetails = await contract.getTokenDetails();
-    const contractOwner = await contract.owner();
-    const soldTokens = await contract.soldTokens();
-    const ethBal = await GET_BALANCE(address);
-
-    // Debug: log the raw response
-    console.log("Token Details:", tokenDetails);
-    console.log(123456);
+    const [tokenDetails, contractOwner, soldTokensRaw, ethBal] = await Promise.all([
+      contract.getTokenDetails(),
+      contract.owner(),
+      contract.soldTokens(),
+      GET_BALANCE(address),
+    ]);
 
     const token = {
-      tokenBal: ethers.utils.formatEther(tokenDetails.supply), // or use ERC20.balanceOf?
+      tokenBal: ethers.utils.formatEther(tokenDetails.supply),
       name: tokenDetails.name,
       symbol: tokenDetails.symbol,
       supply: ethers.utils.formatEther(tokenDetails.supply),
@@ -123,7 +123,7 @@ const TOKEN_ICO = async () => {
       maticBal: ethBal,
       address: address.toLowerCase(),
       owner: contractOwner.toLowerCase(),
-      soldTokens: soldTokens.toNumber(),
+      soldTokens: soldTokensRaw.toNumber(),
     };
 
     setLoader(false);
@@ -136,41 +136,100 @@ const TOKEN_ICO = async () => {
 };
 
 
-const BUY_TOKEN = async(amount) => {
-        try{
-            setLoader(true);
-             const address = await CHECK_WALLET_CONNECTED();
-            if(address){
+// const BUY_TOKEN = async(amount) => {
+//         try{
+//             setLoader(true);
+//              const address = await CHECK_WALLET_CONNECTED();
+//             if(address){
                 
-                //setAccount(address);
-                const contract = await TOKEN_ICO_CONTRACT();
-                const tokenDetails = await contract.getTokenDetails();
+//                 setAccount(address);
+//                 const contract = await TOKEN_ICO_CONTRACT();
+//                 const tokenDetails = await contract.getTokenDetails();
 
-                const availableTokens = ethers.utils.formatEther(tokenDetails.balance.toString());
+//                 const availableTokens = ethers.utils.formatEther(tokenDetails.balance.toString());
 
-                if(availableTokens > 1){
-                    const price = ethers.utils.formatEther(tokenDetails.tokenPrice.toString());
-                    const payAmount = ethers.utils.parseUnits(price.toString(), "ether");
+//                 if(availableTokens > 1){
+//                     const price = ethers.utils.formatEther(tokenDetails.tokenPrice.toString());
+//                     const payAmount = ethers.utils.parseUnits(price.toString(), "ether");
 
-                    const transaction = await contract.buyToken(Number(amount),{
-                        value : payAmount.toString(),
-                        gasLimit : ethers.utils.hexlify(8000000),
+//                     const transaction = await contract.buyToken(Number(amount),{
+//                         value : payAmount.toString(),
+//                         gasLimit : ethers.utils.hexlify(8000000),
 
-                    });
-                    await transaction.wait();
-                    setLoader(false);
-                    notifySuccess("Token purchased successfully");
-                    window.location.reload();
-                }
+//                     });
+//                     await transaction.wait();
+//                     setLoader(false);
+//                     notifySuccess("Token purchased successfully");
+//                     window.location.reload();
+//                 }
 
-            }
-        }catch(error) {
-            console.error("Failed to fetch token ICO contract:", error);
-            notifyError("Failed to fetch token ICO contract");
-            setLoader(false);
-        }
+//             }
+//         }catch(error) {
+//             console.error("Failed to fetch token ICO contract:", error);
+//             notifyError("Failed to fetch token ICO contract");
+//             setLoader(false);
+//         }
 
+// };
+
+  const BUY_TOKEN = async (amount) => {
+  try {
+    setLoader(true);
+
+    const address = await CHECK_WALLET_CONNECTED();
+    if (!address) {
+      notifyError("Wallet not connected");
+      setLoader(false);
+      return;
+    }
+
+    setAccount(address);
+
+    const contract = await TOKEN_ICO_CONTRACT();
+    const tokenDetails = await contract.getTokenDetails();
+
+    const tokenPrice = Number(ethers.utils.formatEther(tokenDetails.tokenPrice));
+    const availableTokens = Number(ethers.utils.formatEther(tokenDetails.balance));
+
+    const amountNumber = Number(amount);
+    if (isNaN(amountNumber) || amountNumber <= 0) {
+      notifyError("Invalid token amount");
+      setLoader(false);
+      return;
+    }
+
+    if (availableTokens < amountNumber) {
+      notifyError("Not enough tokens available");
+      setLoader(false);
+      return;
+    }
+
+    const totalEth = tokenPrice * amountNumber;
+    const totalEthInWei = ethers.utils.parseEther(totalEth.toString());
+
+    // ✅ Use parseUnits for token amount (18 decimals)
+    const tokenAmount = ethers.utils.parseUnits(amountNumber.toString(), 16);
+
+    const tx = await contract.buyToken(tokenAmount, {
+      value: totalEthInWei,
+      gasLimit: ethers.utils.hexlify(800000),
+    });
+
+    await tx.wait();
+
+    notifySuccess(`Successfully purchased ${amountNumber} tokens ✅`);
+    setLoader(false);
+    window.location.reload();
+
+  } catch (error) {
+    console.error("BUY_TOKEN Error:", error);
+    notifyError("Failed to buy token: " + (error?.reason || error?.message));
+    setLoader(false);
+  }
 };
+
+
+
 
 const TOKEN_WITHDRAW = async() => {
         try{
@@ -297,7 +356,7 @@ const TRANSFER_ETHER = async(transfer) => {
              const address = await CHECK_WALLET_CONNECTED();
             if(address){
                 
-                //setAccount(address);
+                setAccount(address);
                 const contract = await TOKEN_ICO_CONTRACT();
                 const payAmount= ethers.utils.parseUnits(_amount.toString(), "ether");
 

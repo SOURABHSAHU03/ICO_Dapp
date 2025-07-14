@@ -51,11 +51,11 @@ const Popup = ( {setBuyModel ,
                   <textarea name="message" cols="30" row = "10" disabled placeholder={`Current Price : ${detail?.tokenBal}${detail?.symbol} Token Address : ${detail?.tokenBal} ${detail?.tokenAddr}`} ></textarea>
               </div>
 
-               <div className="col-lg-12">
+               {/* <div className="col-lg-12">
                    <input type="text" placeholder="_sendTo" onChange={(e) => (
                     setTransferToken({...transferToken,_amount : e.target.value})
                   )}/>
-              </div>
+              </div> */}
              <div className="ico-contract__btn text-center mt-10">
                   <button onClick={() => BUY_TOKEN(amount)} className="thm-btn">
                         Buy Token
